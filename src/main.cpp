@@ -43,13 +43,11 @@ public:
 
     void Update() override
     {
-
         //Update Stuff
         mesh->scale.x = 200;
         mesh->scale.y = 200;
 
-        mesh->rotation.x += 1;
-        mesh->rotation.y += 1;
+        mesh->rotation.y += 50 * pixel::Time::DeltaTime();
         mesh->transform.z = 3;
 
         mesh->UpdateMesh();

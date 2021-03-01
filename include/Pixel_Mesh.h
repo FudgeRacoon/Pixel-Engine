@@ -73,6 +73,10 @@ namespace pixel
     public:
         void LoadMesh(const char* filepath)
         {
+            vertices.clear();
+            faceData.clear();
+            faces.clear();
+
             std::fstream objFile;
             objFile.open(filepath, std::ios::in);
 
@@ -143,7 +147,7 @@ namespace pixel
 
             objFile.close();
         }
-    
+
     public:
         void UpdateMesh()
         {
@@ -151,35 +155,57 @@ namespace pixel
 
             for(int i = 0; i < faceData.size(); i++)
             {
-                Vec3 toProjectVertices[3];
+                Vec3 untransformedVertices[3];
+                Vec3 transformedVertices[3];
                 Vec2 projectedVertices[3];
 
                 Face _faceData = faceData[i];
 
-                toProjectVertices[0] = vertices[_faceData.a - 1];
-                toProjectVertices[1] = vertices[_faceData.b - 1];
-                toProjectVertices[2] = vertices[_faceData.c - 1];
+                untransformedVertices[0] = vertices[_faceData.a - 1];
+                untransformedVertices[1] = vertices[_faceData.b - 1];
+                untransformedVertices[2] = vertices[_faceData.c - 1];
 
                 for(int j = 0; j < 3; j++)
                 {
-                    Vec3 toProjectVertix = toProjectVertices[j];
+                    transformedVertices[j] = untransformedVertices[j];
 
                     //Rotate
-                    toProjectVertix = Vec3::RotateX(toProjectVertices[j], rotation.x);
-                    toProjectVertix = Vec3::RotateY(toProjectVertix, rotation.y);
-                    toProjectVertix = Vec3::RotateZ(toProjectVertix, rotation.z);
+                    transformedVertices[j] = Vec3::RotateX(transformedVertices[j], rotation.x);
+                    transformedVertices[j] = Vec3::RotateY(transformedVertices[j], rotation.y);
+                    transformedVertices[j] = Vec3::RotateZ(transformedVertices[j], rotation.z);
 
-                    //Transform
-                    toProjectVertix.x += transform.x;
-                    toProjectVertix.y += transform.y;
-                    toProjectVertix.z += transform.z;
+                    //Transform z-axis
+                    transformedVertices[j].z += transform.z;
+                }
 
+                //Back-face culling
+                Vec3 a = transformedVertices[0];
+                Vec3 b = transformedVertices[1];
+                Vec3 c = transformedVertices[2];
+
+                Vec3 ab = b - a;
+                Vec3 ac = c - a;
+
+                Vec3 normal = Vec3::Cross(ab, ac);
+                Vec3 cameraRay = Vec3(0, 0, 0) - a;
+
+                float dotProduct = Vec3::Dot(cameraRay, normal);
+
+                if(dotProduct < 0)
+                    continue;
+
+                for(int j = 0; j < 3; j++)
+                {
                     //Scale and project
-                    projectedVertices[j] = PrespectiveProjection(toProjectVertix);
+                    projectedVertices[j] = PrespectiveProjection(transformedVertices[j]);
+
+                    //Transform x-axis and y-axis
+                    projectedVertices[j].x += transform.x;
+                    projectedVertices[j].y += transform.y;
                 }
 
-                    faces.push_back(Triangle(projectedVertices));
-                }
+                faces.push_back(Triangle(projectedVertices));
+            }
         }
         void RenderMesh(Window* window, uint32_t color)
         {
