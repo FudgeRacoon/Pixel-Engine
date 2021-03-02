@@ -26,6 +26,20 @@ namespace pixel
         {
             return Vec2((point.x * scale.x) / point.z, (point.y * scale.y) / point.z);
         }
+        float BackFaceCull(Vec3 faceVertices[])
+        {
+            Vec3 a = faceVertices[0];
+            Vec3 b = faceVertices[1];
+            Vec3 c = faceVertices[2];
+
+            Vec3 ab = a - b;
+            Vec3 ac = a - c;
+
+            Vec3 normal = Vec3::Cross(ab, ac);
+            Vec3 cameraRay = Vec3(0, 0, 0) - a;
+
+            return Vec3::Dot(cameraRay, normal);
+        }
 
     private:
         std::vector<Vec3> vertices;
@@ -155,16 +169,18 @@ namespace pixel
 
             for(int i = 0; i < faceData.size(); i++)
             {
-                Vec3 untransformedVertices[3];
-                Vec3 transformedVertices[3];
-                Vec2 projectedVertices[3];
+                Vec3 untransformedVertices[3];      //Array to hold vertices that haven't been tranformed yet
+                Vec3 transformedVertices[3];        //Array to hold vertices that hes been transformed
+                Vec2 projectedVertices[3];          //Array to hold vertices that has been projected and ready to render
 
                 Face _faceData = faceData[i];
 
+                //Get correct vertices using face data and store them
                 untransformedVertices[0] = vertices[_faceData.a - 1];
                 untransformedVertices[1] = vertices[_faceData.b - 1];
                 untransformedVertices[2] = vertices[_faceData.c - 1];
 
+                //Loop through all vertices of a triangle and apply transformations
                 for(int j = 0; j < 3; j++)
                 {
                     transformedVertices[j] = untransformedVertices[j];
@@ -178,22 +194,11 @@ namespace pixel
                     transformedVertices[j].z += transform.z;
                 }
 
-                //Back-face culling
-                Vec3 a = transformedVertices[0];
-                Vec3 b = transformedVertices[1];
-                Vec3 c = transformedVertices[2];
-
-                Vec3 ab = b - a;
-                Vec3 ac = c - a;
-
-                Vec3 normal = Vec3::Cross(ab, ac);
-                Vec3 cameraRay = Vec3(0, 0, 0) - a;
-
-                float dotProduct = Vec3::Dot(cameraRay, normal);
-
-                if(dotProduct < 0)
+                //Preform back-face culling
+                if(BackFaceCull(transformedVertices) < 0)
                     continue;
 
+                //Apply projection for all vertices of a triangle for rendering
                 for(int j = 0; j < 3; j++)
                 {
                     //Scale and project
@@ -204,6 +209,7 @@ namespace pixel
                     projectedVertices[j].y += transform.y;
                 }
 
+                //Create a new triangle and add it to the faces array
                 faces.push_back(Triangle(projectedVertices));
             }
         }

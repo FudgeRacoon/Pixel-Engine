@@ -18,7 +18,7 @@ public:
         window = new pixel::Window("Pixel Engine", 800, 600, SDL_WINDOW_SHOWN, 0, false);
 
         mesh = new pixel::Mesh();
-        mesh->LoadMesh("assets\\efa.obj");
+        mesh->LoadMesh("assets\\jet.obj");
     }
 
     void ProcessInput(SDL_Event event) override
@@ -48,6 +48,7 @@ public:
         mesh->scale.y = 200;
 
         mesh->rotation.y += 50 * pixel::Time::DeltaTime();
+        mesh->rotation.x += 50 * pixel::Time::DeltaTime();
         mesh->transform.z = 3;
 
         mesh->UpdateMesh();
