@@ -4,7 +4,7 @@ A graphics library made in `c++` and `SDL2`.
 
 <h3>The library is capable of the following:</h3>
   <ul>
-    <li>Drawing a pixels and lines on the screen</li>
+    <li>Drawing pixels and lines on the screen</li>
     <li>Drawing 2D primitive shapes
       <ul>
         <li>Rectangles</li>
