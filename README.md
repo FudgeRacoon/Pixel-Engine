@@ -2,18 +2,25 @@
 
 A graphics library made in `c++` and `SDL2`. 
 
-The library is capable of the following:
-  - Drawing a pixels and lines on the screen
+<h3>The library is capable of the following:</h3>
+  <ul>
+    <li>Drawing a pixels and lines on the screen</li>
+    <li>Drawing 2D primitive shapes
+      <ul>
+        <li>Rectangles</li>
+        <li>Triangles</li>
+        <li>Circles</li>
+        <li>Polygons</li>
+      </ul>
+    </li>
+    <li>Rendering 3D meshes</li>
+    <li>Loading .obj files</li>
+  </ul>
+
+<h3>Planned features:</h3>
+  <ul>
+    <li>Applying textures to meshes</li>
+    <li>Shading and lighting</li>
+    <li>Implementing a functional camera</li>
+  </ul>
   
-  - Drawing 2D primitive shapes
-    - Rectangles
-    - Triangles
-    - Circles
-    - Polygons
-    
- - Rendering 3D meshes
- 
- - Loading .obj files
- 
- 
- 
