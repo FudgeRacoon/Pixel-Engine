@@ -36,6 +36,8 @@ namespace pixel
             Vec3 ac = a - c;
 
             Vec3 normal = Vec3::Cross(ab, ac);
+            normal = Vec3::Normalize(normal);
+
             Vec3 cameraRay = Vec3(0, 0, 0) - a;
 
             return Vec3::Dot(cameraRay, normal);

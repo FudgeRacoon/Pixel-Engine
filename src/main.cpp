@@ -48,7 +48,6 @@ public:
         mesh->scale.y = 200;
 
         mesh->rotation.y += 50 * pixel::Time::DeltaTime();
-        mesh->rotation.x += 50 * pixel::Time::DeltaTime();
         mesh->transform.z = 3;
 
         mesh->UpdateMesh();

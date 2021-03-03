@@ -125,7 +125,7 @@ namespace pixel
             result.z = -this->z;
             return result;
         }
-        Vec3 operator *(int value)
+        Vec3 operator *(float value)
         {
             Vec3 result;
             result.x = this->x * value;
