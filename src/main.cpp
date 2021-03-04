@@ -60,14 +60,8 @@ public:
 
         //Render Stuff
         GenerateGrid(10);
-        //mesh->RenderMesh(window, 0xFFFFFFFF);
+        mesh->RenderMesh(window, 0xFF696969);
         
-        pixel::Vec2 v[] = {pixel::Vec2(-100, 100), pixel::Vec2(-50, -80), pixel::Vec2(50, 50)};
-        pixel::Triangle tri(v);
-
-        tri.DrawFill(window, 0xFFFF0000);
-        tri.DrawNoFill(window, 0xFFFF0000);
-
         window->GetFrameBuffer()->RenderBuffer(window);
     }
 }_script;

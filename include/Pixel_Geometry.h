@@ -81,7 +81,7 @@ namespace pixel
         }
         void DrawFill(Window* window, uint32_t color)
         {
-            //Sort the vertices ascendingly
+            #pragma region Sorting
             Vec2 sortedVertices[3];
             for(int i = 0; i < 3; i++)
                 sortedVertices[i] = vertices[i];
@@ -96,15 +96,17 @@ namespace pixel
                         sortedVertices[i + 1] = temp;
                     }
                 }
-                    
-            //Calculate mid-point of the triangle using linear interpolation
+            #pragma endregion 
+
+            #pragma region Mid-Point
             float mY = sortedVertices[1].y;
             float t = ( mY - sortedVertices[0].y ) / ( sortedVertices[2].y - sortedVertices[0].y );
             float mX = sortedVertices[0].x + ( sortedVertices[2].x - sortedVertices[0].x) * t;
-            
+            #pragma endregion
+
             FrameBuffer* frameBuffer = window->GetFrameBuffer();
 
-            //Flat-Bottom
+            #pragma region Flat-Bottom
             float inverseSlope1 = ( mX - sortedVertices[0].x ) / ( mY - sortedVertices[0].y );
             float inverseSlope2 = ( sortedVertices[1].x - sortedVertices[0].x ) / ( sortedVertices[1].y - sortedVertices[0].y );
 
@@ -117,8 +119,9 @@ namespace pixel
                 leftX -= inverseSlope1;
                 rightX -= inverseSlope2;
             }
+            #pragma endregion
 
-            //Flat-Top
+            #pragma region Flat-Top
             inverseSlope1 = ( sortedVertices[2].x - mX ) / ( sortedVertices[2].y - mY );
             inverseSlope2 = ( sortedVertices[2].x - sortedVertices[1].x ) / ( sortedVertices[2].y - sortedVertices[1].y );
 
@@ -131,6 +134,7 @@ namespace pixel
                 leftX += inverseSlope1;
                 rightX += inverseSlope2;
             }
+            #pragma endregion
         }
     };
 };

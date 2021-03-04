@@ -80,7 +80,7 @@ namespace pixel
             float x = x1;
             float y = y1;
 
-            for(int i = 1; i <= step; i++)
+            for(int i = 0; i < step; i++)
             {
                 window->GetFrameBuffer()->DrawPixel(window, x, y, color);
                 x += xInc;

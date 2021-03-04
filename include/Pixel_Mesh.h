@@ -219,7 +219,11 @@ namespace pixel
         void RenderMesh(Window* window, uint32_t color)
         {
             for(int i = 0; i < faces.size(); i++)
+            {
                 faces[i].DrawFill(window, color);
+                faces[i].DrawNoFill(window, 0xFF000000);
+            }
+                
         }
     }; 
 };
