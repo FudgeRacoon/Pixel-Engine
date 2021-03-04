@@ -18,7 +18,7 @@ public:
         window = new pixel::Window("Pixel Engine", 800, 600, SDL_WINDOW_SHOWN, 0, false);
 
         mesh = new pixel::Mesh();
-        mesh->LoadMesh("assets\\jet.obj");
+        mesh->LoadMesh("assets\\cube.obj");
     }
 
     void ProcessInput(SDL_Event event) override
@@ -46,7 +46,8 @@ public:
         //Update Stuff
         mesh->scale.x = 200;
         mesh->scale.y = 200;
-
+    
+        mesh->rotation.x += 50 * pixel::Time::DeltaTime();
         mesh->rotation.y += 50 * pixel::Time::DeltaTime();
         mesh->transform.z = 3;
 
@@ -59,8 +60,14 @@ public:
 
         //Render Stuff
         GenerateGrid(10);
-        mesh->RenderMesh(window, 0xFF8f00b3);
-       
+        //mesh->RenderMesh(window, 0xFFFFFFFF);
+        
+        pixel::Vec2 v[] = {pixel::Vec2(-100, 100), pixel::Vec2(-50, -80), pixel::Vec2(50, 50)};
+        pixel::Triangle tri(v);
+
+        tri.DrawFill(window, 0xFFFF0000);
+        tri.DrawNoFill(window, 0xFFFF0000);
+
         window->GetFrameBuffer()->RenderBuffer(window);
     }
 }_script;

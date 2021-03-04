@@ -24,6 +24,7 @@ namespace pixel
     private:
         Vec2 PrespectiveProjection(Vec3 point)
         {
+            //Preform prespective divison
             return Vec2((point.x * scale.x) / point.z, (point.y * scale.y) / point.z);
         }
         float BackFaceCull(Vec3 faceVertices[])
@@ -218,7 +219,7 @@ namespace pixel
         void RenderMesh(Window* window, uint32_t color)
         {
             for(int i = 0; i < faces.size(); i++)
-                faces[i].DrawNoFill(window, color);
+                faces[i].DrawFill(window, color);
         }
     }; 
 };

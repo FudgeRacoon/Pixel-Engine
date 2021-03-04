@@ -38,7 +38,7 @@ namespace pixel
             result.y = -this->y;
             return result;
         }
-        Vec2 operator *(int value)
+        Vec2 operator *(float value)
         {
             Vec2 result;
             result.x = this->x * value;
@@ -80,7 +80,13 @@ namespace pixel
             float distY = v1.y - v2.y;
             return Magnitude(Vec2(distX, distY));
         }
-        
+
+        //Linearly interpolates between two points        
+        static Vec2 Lerp(Vec2 v1, Vec2 v2, float t)
+        {
+            return v1 + (v2 - v1) * t;
+        }
+
         //Calculates the degree angle between two vectors
         static float Angle(Vec2 v1, Vec2 v2)
         {
@@ -176,6 +182,12 @@ namespace pixel
             return Magnitude(Vec3(distX, distY, distZ));
         }
         
+        //Linearly interpolates between two points
+        static Vec3 Lerp(Vec3 v1, Vec3 v2, float t)
+        {
+            return v1 + (v2 - v1) * t;
+        }
+
         //Calculates the degree angle between two vectors
         static float Angle(Vec3 v1, Vec3 v2)
         {

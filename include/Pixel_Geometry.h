@@ -79,6 +79,59 @@ namespace pixel
             frameBuffer->DrawLine(window, vertices[1].x, vertices[1].y, vertices[2].x, vertices[2].y, color);
             frameBuffer->DrawLine(window, vertices[2].x, vertices[2].y, vertices[0].x, vertices[0].y, color);
         }
+        void DrawFill(Window* window, uint32_t color)
+        {
+            //Sort the vertices ascendingly
+            Vec2 sortedVertices[3];
+            for(int i = 0; i < 3; i++)
+                sortedVertices[i] = vertices[i];
+
+            for(int pass = 0; pass < 3 - 1; pass++)
+                for(int i = 0; i < 3 - pass - 1; i++)
+                {
+                    if(sortedVertices[i].y <= sortedVertices[i + 1].y)
+                    {
+                        Vec2 temp = sortedVertices[i];
+                        sortedVertices[i] = sortedVertices[i + 1];
+                        sortedVertices[i + 1] = temp;
+                    }
+                }
+                    
+            //Calculate mid-point of the triangle using linear interpolation
+            float mY = sortedVertices[1].y;
+            float t = ( mY - sortedVertices[0].y ) / ( sortedVertices[2].y - sortedVertices[0].y );
+            float mX = sortedVertices[0].x + ( sortedVertices[2].x - sortedVertices[0].x) * t;
+            
+            FrameBuffer* frameBuffer = window->GetFrameBuffer();
+
+            //Flat-Bottom
+            float inverseSlope1 = ( mX - sortedVertices[0].x ) / ( mY - sortedVertices[0].y );
+            float inverseSlope2 = ( sortedVertices[1].x - sortedVertices[0].x ) / ( sortedVertices[1].y - sortedVertices[0].y );
+
+            float leftX = sortedVertices[0].x;
+            float rightX = sortedVertices[0].x;
+
+            for(int scanLine = sortedVertices[0].y; scanLine >= mY; scanLine--)
+            {
+                frameBuffer->DrawLine(window, leftX, scanLine, rightX, scanLine, color);
+                leftX -= inverseSlope1;
+                rightX -= inverseSlope2;
+            }
+
+            //Flat-Top
+            inverseSlope1 = ( sortedVertices[2].x - mX ) / ( sortedVertices[2].y - mY );
+            inverseSlope2 = ( sortedVertices[2].x - sortedVertices[1].x ) / ( sortedVertices[2].y - sortedVertices[1].y );
+
+            leftX = sortedVertices[2].x;
+            rightX = sortedVertices[2].x;
+
+            for(int scanLine = sortedVertices[2].y; scanLine <= mY; scanLine++)
+            {
+                frameBuffer->DrawLine(window, leftX, scanLine, rightX, scanLine, color);
+                leftX += inverseSlope1;
+                rightX += inverseSlope2;
+            }
+        }
     };
 };
 
