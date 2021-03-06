@@ -14,9 +14,13 @@ namespace pixel
     {
         WIREFRAME = 0,
         SOLID = 1,
-        WIREFRAME_AND_SOLID = 2,
-        ENABLE_BACKFACECULLING = 3,
-        DISABLE_BACKFACECULLING = 4
+        WIREFRAME_AND_SOLID = 2
+    };
+
+    enum RenderOption
+    {
+        ENABLE_BACKFACECULLING = 0,
+        DISABLE_BACKFACECULLING = 1
     };
 
     struct Face
@@ -63,11 +67,13 @@ namespace pixel
         Vec3 rotation;
         Vec3 scale;
         RenderMode renderMode;
+        RenderOption renderOption;
 
     public:
         Mesh()
         {
             renderMode = WIREFRAME_AND_SOLID;
+            renderOption = ENABLE_BACKFACECULLING;
         }
     
     public:
@@ -211,8 +217,9 @@ namespace pixel
                 }
 
                 //Preform back-face culling
-               if(BackFaceCull(transformedVertices) < 0)
-                    continue;
+                if(renderOption == ENABLE_BACKFACECULLING)
+                    if(BackFaceCull(transformedVertices) < 0)
+                        continue;
 
                 //Apply projection for all vertices of a triangle for rendering
                 for(int j = 0; j < 3; j++)
@@ -233,10 +240,26 @@ namespace pixel
         {
             for(int i = 0; i < faces.size(); i++)
             {
-                //faces[i].DrawFill(window, color);
-                faces[i].DrawNoFill(window, 0xFFFF0000);
+                switch (renderMode)
+                {
+                    case WIREFRAME:
+                    {
+                        faces[i].DrawNoFill(window, color);
+                        break;
+                    }
+                    case SOLID:
+                    {
+                        faces[i].DrawFill(window, color);
+                        break;
+                    }
+                    case WIREFRAME_AND_SOLID:
+                    {
+                        faces[i].DrawFill(window, color);
+                        faces[i].DrawNoFill(window, 0xFF000000);
+                        break;
+                    }
+                }   
             }
-                
         }
     }; 
 };

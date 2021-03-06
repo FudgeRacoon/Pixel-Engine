@@ -38,6 +38,31 @@ public:
                     delete window;
                     break;
                 }
+                if(event.key.keysym.sym == SDLK_1)
+                {
+                    mesh->renderMode = pixel::WIREFRAME;
+                    break;
+                }
+                else if(event.key.keysym.sym == SDLK_2)
+                {
+                    mesh->renderMode = pixel::SOLID;
+                    break;
+                }
+                else if(event.key.keysym.sym == SDLK_3)
+                {
+                    mesh->renderMode = pixel::WIREFRAME_AND_SOLID;
+                    break;
+                }
+                else if(event.key.keysym.sym == SDLK_4)
+                {
+                    mesh->renderOption = pixel::ENABLE_BACKFACECULLING;
+                    break;
+                }
+                else if(event.key.keysym.sym == SDLK_5)
+                {
+                    mesh->renderOption = pixel::DISABLE_BACKFACECULLING;
+                    break;
+                }
             }
             case SDL_MOUSEWHEEL:
             {
