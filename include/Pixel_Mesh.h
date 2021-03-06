@@ -233,8 +233,8 @@ namespace pixel
         {
             for(int i = 0; i < faces.size(); i++)
             {
-                faces[i].DrawFill(window, color);
-                faces[i].DrawNoFill(window, 0xFF000000);
+                //faces[i].DrawFill(window, color);
+                faces[i].DrawNoFill(window, 0xFFFF0000);
             }
                 
         }

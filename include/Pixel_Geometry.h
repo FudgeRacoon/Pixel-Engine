@@ -8,6 +8,11 @@
 
 namespace pixel
 {
+    float CrossProduct(const Vec2& v1, const Vec2& v2)
+    {
+        return (v1.x * v2.y) - (v1.y * v2.x);
+    }
+
     //A 2D Rectangle defined by X and Y position, width and height
     struct Rect
     {
@@ -77,6 +82,7 @@ namespace pixel
         }
         void DrawFill(Window* window, uint32_t color)
         {
+        /*
             #pragma region Sorting
             Vec2 sortedVertices[3];
             for(int i = 0; i < 3; i++)
@@ -131,6 +137,33 @@ namespace pixel
                 rightX += inverseSlope2;
             }
             #pragma endregion
+        */
+        
+            /* get the bounding box of the triangle */
+            int maxX = Math::Max(vertices[0].x, Math::Max(vertices[1].x, vertices[2].x));
+            int minX = Math::Min(vertices[0].x, Math::Min(vertices[1].x, vertices[2].x));
+            int maxY = Math::Max(vertices[0].y, Math::Max(vertices[1].y, vertices[2].y));
+            int minY = Math::Min(vertices[0].y, Math::Min(vertices[1].y, vertices[2].y));
+
+            /* spanning vectors of edge (v1,v2) and (v1,v3) */
+            Vec2 vs1(vertices[1].x - vertices[0].x, vertices[1].y - vertices[0].y);
+            Vec2 vs2(vertices[2].x - vertices[0].x, vertices[2].y - vertices[0].y);
+
+            for (int x = minX; x <= maxX; x++)
+            {
+                for (int y = minY; y <= maxY; y++)
+                {
+                    Vec2 q(x - vertices[0].x, y - vertices[0].y);
+
+                    float s = (float)CrossProduct(q, vs2) / CrossProduct(vs1, vs2);
+                    float t = (float)CrossProduct(vs1, q) / CrossProduct(vs1, vs2);
+
+                    if ( (s >= 0) && (t >= 0) && (s + t <= 1))
+                    { /* inside triangle */
+                        window->GetFrameBuffer()->DrawPixel(window, x, y, color);
+                    }
+                }
+            }
         }
     };
 };
