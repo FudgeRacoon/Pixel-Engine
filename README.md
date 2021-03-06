@@ -14,6 +14,13 @@ A graphics library made in `c++` and `SDL2`.
       </ul>
     </li>
     <li>Rendering 3D meshes</li>
+    <li>Multiple rendering modes
+      <ul>
+        <li>Solid mode</li>
+        <li>Wireframe mode</li>
+        <li>Back-Face culling</li>
+      </ul>
+    </li>
     <li>Loading .obj files</li>
   </ul>
 
