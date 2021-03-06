@@ -5,6 +5,7 @@ class script : public PixelLoop
 {
 public:
     pixel::Mesh* mesh;
+    float rotation = 0.0;
 
     void GenerateGrid(int size)
     {
@@ -38,6 +39,24 @@ public:
                     break;
                 }
             }
+            case SDL_MOUSEWHEEL:
+            {
+                if(event.wheel.y > 0)
+                {
+                    rotation += 1;
+                    break;
+                }
+                else if(event.wheel.y < 0)
+                {
+                    rotation += -1;
+                    break;
+                }
+                else if(event.wheel.y == 0)
+                {
+                    rotation += 0;
+                    break;
+                }
+            }
         }
     }
 
@@ -47,8 +66,8 @@ public:
         mesh->scale.x = 200;
         mesh->scale.y = 200;
     
-        mesh->rotation.x += 50 * pixel::Time::DeltaTime();
-        mesh->rotation.y += 50 * pixel::Time::DeltaTime();
+        mesh->rotation.x += rotation * pixel::Time::DeltaTime();
+        mesh->rotation.y += rotation * pixel::Time::DeltaTime();
         mesh->transform.z = 3;
 
         mesh->UpdateMesh();
@@ -60,7 +79,7 @@ public:
 
         //Render Stuff
         GenerateGrid(10);
-        mesh->RenderMesh(window, 0xFF696969);
+        mesh->RenderMesh(window, 0xFFFF0000);
         
         window->GetFrameBuffer()->RenderBuffer(window);
     }

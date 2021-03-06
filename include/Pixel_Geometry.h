@@ -22,18 +22,14 @@ namespace pixel
         {
             FrameBuffer* frameBuffer = window->GetFrameBuffer();
 
-            //Draw top and bottom edges
-            for(int counter = 0; counter <= width; counter++)
-            {
-                frameBuffer->DrawPixel(window, x + counter, y, color);
-                frameBuffer->DrawPixel(window, x + counter, y + height, color);
-            }
-            //Draw right and left edges
-            for(int counter = 0; counter <= height; counter++)
-            {
-                frameBuffer->DrawPixel(window, x, y + counter, color);
-                frameBuffer->DrawPixel(window, x + width, y + counter, color);
-            }
+            //Top edge
+            frameBuffer->DrawLine(window, x, y, x + width, y, color);
+            //Bottom edge
+            frameBuffer->DrawLine(window, x, y - height, x + width, y - height, color);
+            //Right edge
+            frameBuffer->DrawLine(window, x, y, x, y - height, color);
+            //Left edge
+            frameBuffer->DrawLine(window, x + width, y, x + width, y - height, color);
         }
         void DrawFill(Window* window, uint32_t color)
         {

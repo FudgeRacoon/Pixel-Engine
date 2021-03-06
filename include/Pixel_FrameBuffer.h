@@ -51,13 +51,13 @@ namespace pixel
         }
 
         //Draws a pixel on the window respecting cartesian coordinates
-        void DrawPixel(Window* window, float x, float y, uint32_t color)
+        void DrawPixel(Window* window, int x, int y, uint32_t color)
         {
             int xOrigin = window->GetWidth() / 2;
             int yOrigin = window->GetHeight() / 2;
 
-            int _x = xOrigin + Math::Round(x);
-            int _y = yOrigin - Math::Round(y);
+            int _x = xOrigin + x;
+            int _y = yOrigin - y;
 
             bool withinBoundries = (_x >= 0 && _x < window->GetWidth()) && (_y >= 0 && _y < window->GetHeight());
 
@@ -80,9 +80,9 @@ namespace pixel
             float x = x1;
             float y = y1;
 
-            for(int i = 0; i < step; i++)
+            for(int i = 0; i <= step; i++)
             {
-                window->GetFrameBuffer()->DrawPixel(window, x, y, color);
+                window->GetFrameBuffer()->DrawPixel(window, Math::Round(x), Math::Round(y), color);
                 x += xInc;
                 y += yInc;
             }

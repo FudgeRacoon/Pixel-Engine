@@ -10,6 +10,15 @@
 
 namespace pixel
 {
+    enum RenderMode
+    {
+        WIREFRAME = 0,
+        SOLID = 1,
+        WIREFRAME_AND_SOLID = 2,
+        ENABLE_BACKFACECULLING = 3,
+        DISABLE_BACKFACECULLING = 4
+    };
+
     struct Face
     {
         int a, b, c;
@@ -53,9 +62,13 @@ namespace pixel
         Vec3 transform;
         Vec3 rotation;
         Vec3 scale;
+        RenderMode renderMode;
 
     public:
-        Mesh() {}
+        Mesh()
+        {
+            renderMode = WIREFRAME_AND_SOLID;
+        }
     
     public:
         template<typename... Ts>
@@ -198,7 +211,7 @@ namespace pixel
                 }
 
                 //Preform back-face culling
-                if(BackFaceCull(transformedVertices) < 0)
+               if(BackFaceCull(transformedVertices) < 0)
                     continue;
 
                 //Apply projection for all vertices of a triangle for rendering
