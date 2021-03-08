@@ -1,5 +1,6 @@
 #include <iostream>
 #include <PixelEngine.h>
+#include <Pixel_Color.h>
 
 class script : public PixelLoop
 {
