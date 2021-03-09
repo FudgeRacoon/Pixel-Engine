@@ -118,6 +118,7 @@ public:
 int main(int argc, char* argv[])
 {
     _script.Run();
+    getchar();
 
     return 0;
 }
