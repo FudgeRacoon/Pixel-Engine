@@ -1,4 +1,7 @@
 #include <Pixel_Color.h>
+#include <string>
+#include <sstream>
+#include <iostream>
 
 pixel::Color::Color(float r, float g, float b, float a) : r(r), g(g), b(b), a(a) {}
 pixel::Color::Color(float r, float g, float b) :  r(r), g(g), b(b)
@@ -31,3 +34,23 @@ pixel::Color pixel::Color::Yellow()
     return Color(255, 255, 0);
 }
 
+pixel::Color pixel::Color::Lerp(Color a, Color b, float t)
+{
+    return pixel::Color
+    (
+        a.r + (b.r - a.r) * t,
+        a.g + (b.g - a.g) * t,
+        a.b + (b.b - a.b) * t,
+        a.a + (b.a - a.a) * t
+    );
+}
+
+pixel::uint32 pixel::Color::RgbToHex(Color color) 
+{   
+    int r = color.r;
+    int g = color.g;
+    int b = color.b;
+    int a = color.a;
+
+    return ((a & 0xff) << 24) + ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
+}

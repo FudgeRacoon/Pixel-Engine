@@ -5,6 +5,7 @@
 #include <SDL2/SDL_image.h>
 #include <Pixel_Window.h>
 #include <Pixel_Math.h>
+#include <Pixel_Color.h>
 #include <iostream>
 
 #include <SDL2/SDL_image.h>
@@ -14,7 +15,7 @@ namespace pixel
     //A data structure that holds data about pixels in a window
     struct FrameBuffer 
     {
-        uint32_t* data;
+        uint32* data;
         SDL_Texture* frameBuffer_texture;
 
         FrameBuffer(Window* window)
@@ -42,7 +43,7 @@ namespace pixel
         void RenderBuffer(Window* window)
         {
             //Update the framebuffer texture with the pixel data stored
-            SDL_UpdateTexture(frameBuffer_texture, NULL, data, window->GetWidth() * sizeof(uint32_t));
+            SDL_UpdateTexture(frameBuffer_texture, NULL, data, window->GetWidth() * sizeof(uint32));
 
             //Render the texture using renderer passed and present it to the front buffer
             SDL_RenderCopy(window->GetRenderer(), frameBuffer_texture, NULL, NULL);
@@ -51,7 +52,7 @@ namespace pixel
         }
 
         //Draws a pixel on the window respecting cartesian coordinates
-        void DrawPixel(Window* window, int x, int y, uint32_t color)
+        void DrawPixel(Window* window, int x, int y, Color color)
         {
             int xOrigin = window->GetWidth() / 2;
             int yOrigin = window->GetHeight() / 2;
@@ -62,11 +63,11 @@ namespace pixel
             bool withinBoundries = (_x >= 0 && _x < window->GetWidth()) && (_y >= 0 && _y < window->GetHeight());
 
             if(withinBoundries)
-                data[(window->GetWidth() * _y) + _x] = color;      
+                data[(window->GetWidth() * _y) + _x] = Color::RgbToHex(color);      
         }
 
         //Draws a line on the on the window respecting cartesian coordinates
-        void DrawLine(Window* window, float x1, float y1, float x2, float y2, uint32_t color)
+        void DrawLine(Window* window, float x1, float y1, float x2, float y2, Color color)
         {   
             float dX = x2 - x1;
             float dY = y2 - y1;
@@ -89,11 +90,11 @@ namespace pixel
         }
 
         //Clears the framebuffer with the color passed 
-        void ClearBuffer(Window* window, uint32_t color)
+        void ClearBuffer(Window* window, Color color)
         {
             for(int y = 0; y < window->GetHeight(); y++)
                 for(int x = 0; x < window->GetWidth(); x++)
-                    data[(window->GetWidth() * y) + x] = color;
+                    data[(window->GetWidth() * y) + x] = pixel::Color::RgbToHex(color);     
         }
     };
 };

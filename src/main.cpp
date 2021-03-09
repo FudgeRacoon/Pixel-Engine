@@ -1,6 +1,5 @@
 #include <iostream>
 #include <PixelEngine.h>
-#include <Pixel_Color.h>
 
 class script : public PixelLoop
 {
@@ -12,7 +11,7 @@ public:
     {
         for(int y = -window->GetHeight(); y < window->GetHeight(); y += size)
             for(int x = -window->GetWidth(); x < window->GetWidth(); x += size)
-                window->GetFrameBuffer()->DrawPixel(window, x, y, 0xFF333333);
+                window->GetFrameBuffer()->DrawPixel(window, x, y, pixel::Color(51, 51, 51, 255));
     }
 public:
     void Setup() override
@@ -102,11 +101,11 @@ public:
 
     void Render() override
     {
-        window->GetFrameBuffer()->ClearBuffer(window, 0xFF000000);
+        window->GetFrameBuffer()->ClearBuffer(window, pixel::Color::Black());
 
         //Render Stuff
         GenerateGrid(10);
-        mesh->RenderMesh(window, 0xFFFF0000);
+        mesh->RenderMesh(window, pixel::Color(255, 0, 0, 255));
         
         window->GetFrameBuffer()->RenderBuffer(window);
     }

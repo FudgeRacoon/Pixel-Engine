@@ -1,4 +1,4 @@
-# Pixel Engine
+<h1>Pixel Engine</h1>
 
 A graphics library made in `c++` and `SDL2`. 
 

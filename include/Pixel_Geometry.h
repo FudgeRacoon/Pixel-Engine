@@ -3,6 +3,7 @@
 
 #include <Pixel_Window.h>
 #include <Pixel_Vector.h>
+#include <Pixel_Color.h>
 #include <Pixel_FrameBuffer.h>
 #include <iostream>
 
@@ -23,7 +24,7 @@ namespace pixel
 
         Rect(float x, float y, int width, int height) : x(x), y(y), width(width), height(height) {}
 
-        void DrawNoFill(Window* window, uint32_t color)
+        void DrawNoFill(Window* window, Color color)
         {
             FrameBuffer* frameBuffer = window->GetFrameBuffer();
 
@@ -36,7 +37,7 @@ namespace pixel
             //Left edge
             frameBuffer->DrawLine(window, x + width, y, x + width, y - height, color);
         }
-        void DrawFill(Window* window, uint32_t color)
+        void DrawFill(Window* window, Color color)
         {
             FrameBuffer* frameBuffer = window->GetFrameBuffer();
 
@@ -73,7 +74,7 @@ namespace pixel
         }
 
     private:
-        void INTERNAL_FlatBottomFill(Window* window, const Vec2& v1, const Vec2& v2, const Vec2& v3, uint32_t color)
+        void INTERNAL_FlatBottomFill(Window* window, const Vec2& v1, const Vec2& v2, const Vec2& v3, Color color)
         {
             float inverseSlope1 = (float)( v2.x - v1.x ) / ( v2.y - v1.y );
             float inverseSlope2 = (float)( v3.x - v1.x ) / ( v3.y - v1.y );
@@ -88,7 +89,7 @@ namespace pixel
                 rightX -= inverseSlope2;
             }
         }
-        void INTERNAL_FlatTopFill(Window* window, const Vec2& v1, const Vec2& v2, const Vec2& v3, uint32_t color)
+        void INTERNAL_FlatTopFill(Window* window, const Vec2& v1, const Vec2& v2, const Vec2& v3, Color color)
         {
             float inverseSlope1 = (float)( v3.x - v1.x ) / ( v3.y - v1.y );
             float inverseSlope2 = (float)( v3.x - v2.x ) / ( v3.y - v2.y );
@@ -105,7 +106,7 @@ namespace pixel
         }
 
     public:
-        void DrawNoFill(Window* window, uint32_t color)
+        void DrawNoFill(Window* window, Color color)
         {
             FrameBuffer* frameBuffer = window->GetFrameBuffer();
 
@@ -113,7 +114,7 @@ namespace pixel
             frameBuffer->DrawLine(window, vertices[1].x, vertices[1].y, vertices[2].x, vertices[2].y, color);
             frameBuffer->DrawLine(window, vertices[2].x, vertices[2].y, vertices[0].x, vertices[0].y, color);
         }
-        void DrawFill(Window* window, uint32_t color)
+        void DrawFill(Window* window, Color color)
         {   
             /*
             //Sort the vertices according to largest y descendingly

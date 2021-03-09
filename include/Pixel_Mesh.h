@@ -5,6 +5,7 @@
 #include <string>
 #include <fstream>
 #include <Pixel_Window.h>
+#include <Pixel_Color.h>
 #include <Pixel_Vector.h>
 #include <Pixel_Geometry.h>
 
@@ -236,7 +237,7 @@ namespace pixel
                 faces.push_back(Triangle(projectedVertices));
             }
         }
-        void RenderMesh(Window* window, uint32_t color)
+        void RenderMesh(Window* window, Color color)
         {
             for(int i = 0; i < faces.size(); i++)
             {
@@ -255,7 +256,7 @@ namespace pixel
                     case WIREFRAME_AND_SOLID:
                     {
                         faces[i].DrawFill(window, color);
-                        faces[i].DrawNoFill(window, 0xFF000000);
+                        faces[i].DrawNoFill(window, pixel::Color::White());
                         break;
                     }
                 }   

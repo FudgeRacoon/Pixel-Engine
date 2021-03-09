@@ -2,9 +2,14 @@
 #define PIXEL_MATH_H
 
 #include <math.h>
+#include <iostream>
 
 namespace pixel
 {
+    typedef uint8_t uint8;
+    typedef uint16_t uint16;
+    typedef uint32_t uint32;
+    
     class Math
     {
     private:
@@ -94,7 +99,27 @@ namespace pixel
         {
             return (int)(value < 0 ? value - 0.5 : value + 0.5);
         }
-    
+
+        //Returns the float result between the min and max values
+        static float Clamp(float value, float min, float max)
+        {
+            if(value < min)
+                value = min;
+            else if(value > max)
+                value = max;
+
+            return value; 
+        }
+
+        //Swaps two values
+        template<typename T>
+        static void Swap(T* a, T* b)
+        {
+            T temp = *a;
+            *a = *b;
+            *b = temp;
+        }
+
         //Returns the absolute of the value passed
         static float Abs(float value)
         {
