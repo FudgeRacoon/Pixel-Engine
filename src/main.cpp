@@ -105,7 +105,11 @@ public:
 
         //Render Stuff
         GenerateGrid(10);
-        mesh->RenderMesh(window, pixel::Color(255, 0, 0, 255));
+
+        static float c = 0.0;
+        pixel::Color red(255, 0, 0, 255);
+        pixel::Color blue(0, 0, 255, 255);
+        mesh->RenderMesh(window, pixel::Color::Lerp(red, blue, c += 0.005));
         
         window->GetFrameBuffer()->RenderBuffer(window);
     }
