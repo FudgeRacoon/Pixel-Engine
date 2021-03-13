@@ -18,6 +18,9 @@ namespace pixel
     public:
         static Color White();
         static Color Black();
+        static Color Red();
+        static Color Blue();
+        static Color Green();
         static Color Pink();
         static Color Cyan();
         static Color Purple();

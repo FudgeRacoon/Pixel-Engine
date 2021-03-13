@@ -15,9 +15,11 @@ namespace pixel
     //A data structure that holds data about pixels in a window
     struct FrameBuffer 
     {
+    private:
         uint32* data;
         SDL_Texture* frameBuffer_texture;
 
+    public:
         FrameBuffer(Window* window)
         {
             //Create a texture where pixel data in framebuffer will be drawn on

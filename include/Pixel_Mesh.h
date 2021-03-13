@@ -60,13 +60,15 @@ namespace pixel
 
     private:
         std::vector<Vec3> vertices;
-        std::vector<Face> faceData;
+        std::vector<Face> edges;
         std::vector<Triangle> faces;
 
     public:
         Vec3 transform;
         Vec3 rotation;
         Vec3 scale;
+
+    public:
         RenderMode renderMode;
         RenderOption renderOption;
 
@@ -95,23 +97,23 @@ namespace pixel
             return vertices;
         }
         template<typename... Ts>
-        void SetFaceData(Ts... _faceData)
+        void SetFaceData(Ts... _edges)
         {
-            Face __faceData[] = {_faceData...};
+            Face __edges[] = {_edges...};
 
-            for(int i = 0; i < sizeof(__faceData) / sizeof(Face); i++)
-                faceData.push_back(__faceData[i]);
+            for(int i = 0; i < sizeof(__edges) / sizeof(Face); i++)
+                edges.push_back(__edges[i]);
         }
-        void SetFaceData(std::vector<Face> _faceData)
+        void SetFaceData(std::vector<Face> _edges)
         {
-            faceData = _faceData;
+            edges = _edges;
         }
     
     public:
         void LoadMesh(const char* filepath)
         {
             vertices.clear();
-            faceData.clear();
+            edges.clear();
             faces.clear();
 
             std::fstream objFile;
@@ -154,7 +156,7 @@ namespace pixel
                 {
                     int c = 0;
                     std::string value;
-                    Face face;
+                    Face edge;
 
                     int size = data.size();
 
@@ -167,18 +169,18 @@ namespace pixel
                             c++;
 
                             if(c == 1)
-                                face.a = strtol(value.c_str(), nullptr, 10);
+                                edge.a = strtol(value.c_str(), nullptr, 10);
                             else if(c == 2)
-                                face.b = strtol(value.c_str(), nullptr, 10);
+                                edge.b = strtol(value.c_str(), nullptr, 10);
                             else if(c == 3)
-                                face.c = strtol(value.c_str(), nullptr, 10);
+                                edge.c = strtol(value.c_str(), nullptr, 10);
                             i = data.find(' ', i);
 
                             value.clear();
                         }
                     }
 
-                    faceData.push_back(face);
+                    edges.push_back(edge);
                 }
             }
 
@@ -190,18 +192,18 @@ namespace pixel
         {
             faces.clear();
 
-            for(int i = 0; i < faceData.size(); i++)
+            for(int i = 0; i < edges.size(); i++)
             {
                 Vec3 untransformedVertices[3];      //Array to hold vertices that haven't been tranformed yet
                 Vec3 transformedVertices[3];        //Array to hold vertices that hes been transformed
                 Vec2 projectedVertices[3];          //Array to hold vertices that has been projected and ready to render
 
-                Face _faceData = faceData[i];
+                Face _edge = edges[i];
 
                 //Get correct vertices using face data and store them
-                untransformedVertices[0] = vertices[_faceData.a - 1];
-                untransformedVertices[1] = vertices[_faceData.b - 1];
-                untransformedVertices[2] = vertices[_faceData.c - 1];
+                untransformedVertices[0] = vertices[_edge.a - 1];
+                untransformedVertices[1] = vertices[_edge.b - 1];
+                untransformedVertices[2] = vertices[_edge.c - 1];
 
                 //Loop through all vertices of a triangle and apply transformations
                 for(int j = 0; j < 3; j++)
@@ -234,8 +236,22 @@ namespace pixel
                 }
 
                 //Create a new triangle and add it to the faces array
-                faces.push_back(Triangle(projectedVertices));
+                faces.push_back
+                (
+                    Triangle
+                    (
+                        projectedVertices, 
+                        (transformedVertices[0].z + transformedVertices[1].z + transformedVertices[2].z) / 3.0
+                    )
+                );
             }
+
+            //Sort the faces according to their depth ascendingly
+            for(int pass = 0; pass < faces.size() - 1; pass++)
+                for(int i = 0; i < faces.size() - pass - 1; i++)
+                    if(faces[i].avgDepth > faces[i+1].avgDepth)
+                        Math::Swap<Triangle>(&faces[i], &faces[i+1]);
+                
         }
         void RenderMesh(Window* window, Color color)
         {

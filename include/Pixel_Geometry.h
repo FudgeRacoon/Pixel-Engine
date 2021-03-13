@@ -41,23 +41,8 @@ namespace pixel
         {
             FrameBuffer* frameBuffer = window->GetFrameBuffer();
 
-            //Draw top and bottom edges
-            for(int counter = 0; counter <= width; counter++)
-            {
-                frameBuffer->DrawPixel(window, x + counter, y, color);
-                frameBuffer->DrawPixel(window, x + counter, y + height, color);
-            }
-            //Draw right and left edges
-            for(int counter = 0; counter <= height; counter++)
-            {
-                frameBuffer->DrawPixel(window, x, y + counter, color);
-                frameBuffer->DrawPixel(window, x + width, y + counter, color);
-            }
-
-            //Fills the shape with color passed
-            for(int counter_1 = 0; counter_1 <= height; counter_1++)
-                for(int counter_2 = 0; counter_2 <= width; counter_2++)
-                    frameBuffer->DrawPixel(window, x + counter_2, y + counter_1, color);
+            for(int i = 0; i < height; i++)
+                frameBuffer->DrawLine(window, x, y - i, x + width, y - i, color);
         }
     };
 
@@ -65,12 +50,15 @@ namespace pixel
     struct Triangle
     {
         Vec2 vertices[3];
+        float avgDepth;
 
         Triangle () {}
-        Triangle(Vec2 vertices[])
+        Triangle(Vec2 vertices[], float avgDepth)
         {
             for(int i = 0; i < 3; i++)
                 this->vertices[i] = vertices[i];
+
+            this->avgDepth = avgDepth;
         }
 
     private:

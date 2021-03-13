@@ -17,6 +17,18 @@ pixel::Color pixel::Color::Black()
 {
     return Color(0, 0, 0);
 }
+pixel::Color pixel::Color::Red()
+{
+    return Color(255, 0, 0);
+}
+pixel::Color pixel::Color::Blue()
+{
+    return Color(0, 0, 255);
+}
+pixel::Color pixel::Color::Green()
+{
+    return Color(0, 255, 0);
+}
 pixel::Color pixel::Color::Pink()
 {
     return Color(255, 192, 203);
@@ -45,12 +57,12 @@ pixel::Color pixel::Color::Lerp(Color a, Color b, float t)
     );
 }
 
-pixel::uint32 pixel::Color::RgbToHex(Color color) 
+pixel::uint32 pixel::Color::RgbToHex(Color color)
 {   
     int r = color.r;
     int g = color.g;
     int b = color.b;
     int a = color.a;
 
-    return ((a & 0xff) << 24) + ((r & 0xff) << 16) + ((g & 0xff) << 8) + (b & 0xff);
+    return (a << 24) + (r << 16) + (g << 8) + b;
 }
