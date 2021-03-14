@@ -7,6 +7,7 @@
 #include <Pixel_Window.h>
 #include <Pixel_Color.h>
 #include <Pixel_Vector.h>
+#include <Pixel_Matrix.h>
 #include <Pixel_Geometry.h>
 
 namespace pixel
@@ -39,7 +40,7 @@ namespace pixel
         Vec2 PrespectiveProjection(Vec3 point)
         {
             //Preform prespective divison
-            return Vec2((point.x * scale.x) / point.z, (point.y * scale.y) / point.z);
+            return Vec2(point.x / point.z, point.y / point.z);
         }
         float BackFaceCull(Vec3 faceVertices[])
         {
@@ -195,7 +196,7 @@ namespace pixel
             for(int i = 0; i < edges.size(); i++)
             {
                 Vec3 untransformedVertices[3];      //Array to hold vertices that haven't been tranformed yet
-                Vec3 transformedVertices[3];        //Array to hold vertices that hes been transformed
+                Vec3 transformedVertices[3];        //Array to hold vertices that has been transformed
                 Vec2 projectedVertices[3];          //Array to hold vertices that has been projected and ready to render
 
                 Face _edge = edges[i];
@@ -210,10 +211,13 @@ namespace pixel
                 {
                     transformedVertices[j] = untransformedVertices[j];
 
-                    //Rotate
-                    transformedVertices[j] = Vec3::RotateX(transformedVertices[j], rotation.x);
-                    transformedVertices[j] = Vec3::RotateY(transformedVertices[j], rotation.y);
-                    transformedVertices[j] = Vec3::RotateZ(transformedVertices[j], rotation.z);
+                    //Translate transformation
+
+                    //Rotate transformation
+
+                    //Scale transformation
+                    Matrix3 scaleMatrix = Matrix3::Scale(this->scale);
+                    transformedVertices[j] = scaleMatrix * transformedVertices[j];
 
                     //Transform z-axis
                     transformedVertices[j].z += transform.z;
@@ -227,7 +231,7 @@ namespace pixel
                 //Apply projection for all vertices of a triangle for rendering
                 for(int j = 0; j < 3; j++)
                 {
-                    //Scale and project
+                    //Project
                     projectedVertices[j] = PrespectiveProjection(transformedVertices[j]);
 
                     //Transform x-axis and y-axis
@@ -249,7 +253,7 @@ namespace pixel
             //Sort the faces according to their depth ascendingly
             for(int pass = 0; pass < faces.size() - 1; pass++)
                 for(int i = 0; i < faces.size() - pass - 1; i++)
-                    if(faces[i].avgDepth > faces[i+1].avgDepth)
+                    if(faces[i].avgDepth < faces[i+1].avgDepth)
                         Math::Swap<Triangle>(&faces[i], &faces[i+1]);
                 
         }

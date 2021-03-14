@@ -89,11 +89,9 @@ public:
     void Update() override
     {
         //Update Stuff
-        mesh->scale.x = 200;
-        mesh->scale.y = 200;
-    
-        mesh->rotation.x += rotation * pixel::Time::DeltaTime();
-        mesh->rotation.y += rotation * pixel::Time::DeltaTime();
+        mesh->scale.x = 300;
+        mesh->scale.y = 300;
+        
         mesh->transform.z = 3;
 
         mesh->UpdateMesh();
@@ -115,11 +113,10 @@ public:
     }
 }_script;
 
+
 int main(int argc, char* argv[])
 {
     _script.Run();
-    //Test
-    getchar();
-
+    
     return 0;
 }
