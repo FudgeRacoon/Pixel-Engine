@@ -5,7 +5,6 @@ class script : public PixelLoop
 {
 public:
     pixel::Mesh* mesh;
-    float rotation = 0.0;
 
     void GenerateGrid(int size)
     {
@@ -69,11 +68,13 @@ public:
 
     void Update() override
     {
-        //Update Stuff
         mesh->scale.x = 200;
         mesh->scale.y = 200;
         
-        mesh->position.x = 0;
+        mesh->rotation.y += 0.5;
+        mesh->rotation.x += 0.5;
+        mesh->rotation.z += 0.5;
+
         mesh->position.z = 3;
 
         mesh->UpdateMesh();
@@ -83,7 +84,7 @@ public:
     {
         window->GetFrameBuffer()->ClearBuffer(window, pixel::Color::Black());
 
-        //Render Stuff
+
         GenerateGrid(10);
 
         static float c = 0.0;
@@ -99,6 +100,6 @@ public:
 int main(int argc, char* argv[])
 {
     _script.Run();
-    
+
     return 0;
 }

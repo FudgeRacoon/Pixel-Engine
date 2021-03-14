@@ -94,6 +94,11 @@ namespace pixel
         //Returns the identity matrix
         static Matrix4 Identity()
         {
+            // | 1   0   0   0 |
+            // | 0   1   0   0 |
+            // | 0   0   1   0 |
+            // | 0   0   0   1 |
+
             return Matrix4
             (
                 1, 0, 0, 0,
@@ -106,6 +111,11 @@ namespace pixel
         //Creates a translation matrix
         static Matrix4 Translate(Vec3 direction)
         {
+            // | 1   0   0   x |
+            // | 0   1   0   y |
+            // | 0   0   1   z |
+            // | 0   0   0   1 |
+            
             Matrix4 m = Identity();
 
             m(0,3) = direction.x;
@@ -118,6 +128,11 @@ namespace pixel
         //Creates a scaling matrix
         static Matrix4 Scale(Vec3 scaleFactor)
         {
+            // | x   0   0   0 |
+            // | 0   y   0   0 |
+            // | 0   0   z   0 |
+            // | 0   0   0   1 |
+
             Matrix4 m = Identity();
 
             m(0,0) = scaleFactor.x;
@@ -127,9 +142,68 @@ namespace pixel
             return m;
         }   
 
-        static Matrix4 RotateX(float angle);
-        static Matrix4 RotateY(float angle);
-        static Matrix4 RotateZ(float angle);
+        //Creates a rotation matrix around x-axis
+        static Matrix4 RotateX(float angle)
+        {
+            // |   1       0       0       0 |
+            // |   0     cos(0)  sin(0)    0 |
+            // |   0    -sin(0)  cos(0)    0 |
+            // |   0       0       0       1 |
+
+            float c = Math::Cos(angle);
+            float s = Math::Sin(angle);
+
+            Matrix4 m = Identity();
+
+            m(1,1) = c;
+            m(1,2) = s;
+            m(2,1) = -s;
+            m(2,2) = c;
+
+            return m;
+        }
+
+        //Creates a rotation matrix around y-axis
+        static Matrix4 RotateY(float angle)
+        {
+            // | cos(0)    0    -sin(0)    0 |
+            // |   0       1      0        0 |
+            // | sin(0)    0    cos(0)     0 |
+            // |   0       0      0        1 |
+
+            float c = Math::Cos(angle);
+            float s = Math::Sin(angle);
+
+            Matrix4 m = Identity();
+
+            m(0,0) = c;
+            m(0,2) = -s;
+            m(2,0) = s;
+            m(2,2) = c;
+
+            return m;
+        }
+    
+        //Creates a rotation matrix around z-axis
+        static Matrix4 RotateZ(float angle)
+        {
+            // | cos(0)    -sin(0)   0     0 |
+            // | sin(0)     cos(0)   0     0 |
+            // |   0          0      1     0 |
+            // |   0          0      0     1 |
+
+            float c = Math::Cos(angle);
+            float s = Math::Sin(angle);
+
+            Matrix4 m = Identity();
+
+            m(0,0) = c;
+            m(0,1) = -s;
+            m(1,0) = s;
+            m(1,1) = c;
+
+            return m;
+        }
     };
 };
 

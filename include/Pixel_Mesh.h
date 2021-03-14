@@ -215,15 +215,22 @@ namespace pixel
                 {
                     transformedVertices[j] = untransformedVertices[j];
 
-                    //Translate transformation
-                    Matrix4 transalteMatrix = Matrix4::Translate(this->position);
-                    transformedVertices[j] = transalteMatrix * transformedVertices[j];
-
                     //Rotate transformation
-
+                    Matrix4 rotateMatrixX = Matrix4::RotateX(this->rotation.x);
+                    transformedVertices[j] = rotateMatrixX * transformedVertices[j];
+                    Matrix4 rotateMatrixY = Matrix4::RotateY(this->rotation.y);
+                    transformedVertices[j] = rotateMatrixY * transformedVertices[j];
+                    Matrix4 rotateMatrixZ = Matrix4::RotateZ(this->rotation.z);
+                    transformedVertices[j] = rotateMatrixZ * transformedVertices[j];
+                    
                     //Scale transformation
                     Matrix4 scaleMatrix = Matrix4::Scale(this->scale);
                     transformedVertices[j] = scaleMatrix * transformedVertices[j];
+                    
+                    //Translate transformation
+                    Matrix4 transalteMatrix = Matrix4::Translate(this->position);
+                    transformedVertices[j] = transalteMatrix * transformedVertices[j];
+                    
                 }
 
                 //Preform back-face culling
@@ -236,14 +243,7 @@ namespace pixel
                     projectedVertices[j] = PrespectiveProjection(transformedVertices[j]);
 
                 //Create a new triangle and add it to the faces array
-                faces.push_back
-                (
-                    Triangle
-                    (
-                        projectedVertices, 
-                        (transformedVertices[0].z + transformedVertices[1].z + transformedVertices[2].z) / 3.0
-                    )
-                );
+                faces.push_back(Triangle(projectedVertices, (transformedVertices[0].z + transformedVertices[1].z + transformedVertices[2].z) / 3.0));
             }
 
             //Sort the faces according to their depth ascendingly

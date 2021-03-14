@@ -193,31 +193,6 @@ namespace pixel
         {
             return Math::RadToDegree(Math::Acos((Dot(v1, v2) / (Magnitude(v1) * Magnitude(v2)))));
         }
-
-        static Vec3 RotateX(Vec3 point, float angle)
-        {
-            Vec3 newPoint;
-            newPoint.x = point.x;
-            newPoint.y = point.y * Math::Cos(angle) + point.z * Math::Sin(angle);
-            newPoint.z = point.z * Math::Cos(angle) - point.y * Math::Sin(angle);
-            return newPoint;
-        }
-        static Vec3 RotateY(Vec3 point, float angle)
-        {
-            Vec3 newPoint;
-            newPoint.x = point.x * Math::Cos(angle) - point.z * Math::Sin(angle);
-            newPoint.y = point.y;
-            newPoint.z = point.z * Math::Cos(angle) + point.x * Math::Sin(angle);
-            return newPoint;
-        }
-        static Vec3 RotateZ(Vec3 point, float angle)
-        {
-            Vec3 newPoint;
-            newPoint.x = point.x * Math::Cos(angle) - point.y * Math::Sin(angle);
-            newPoint.y = point.y * Math::Cos(angle) + point.z * Math::Sin(angle);
-            newPoint.z = point.z;
-            return newPoint;
-        }
     };
 };
 
