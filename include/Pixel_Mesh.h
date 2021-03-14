@@ -65,7 +65,7 @@ namespace pixel
         std::vector<Triangle> faces;
 
     public:
-        Vec3 transform;
+        Vec3 position;
         Vec3 rotation;
         Vec3 scale;
 
@@ -78,6 +78,10 @@ namespace pixel
         {
             renderMode = WIREFRAME_AND_SOLID;
             renderOption = ENABLE_BACKFACECULLING;
+
+            position.x = 0; position.y = 0; position.z = 0;
+            rotation.x = 0; rotation.y = 0; rotation.z = 0;
+            scale.x = 1; scale.y = 1; scale.z = 1;
         }
     
     public:
@@ -212,15 +216,14 @@ namespace pixel
                     transformedVertices[j] = untransformedVertices[j];
 
                     //Translate transformation
+                    Matrix4 transalteMatrix = Matrix4::Translate(this->position);
+                    transformedVertices[j] = transalteMatrix * transformedVertices[j];
 
                     //Rotate transformation
 
                     //Scale transformation
-                    Matrix3 scaleMatrix = Matrix3::Scale(this->scale);
+                    Matrix4 scaleMatrix = Matrix4::Scale(this->scale);
                     transformedVertices[j] = scaleMatrix * transformedVertices[j];
-
-                    //Transform z-axis
-                    transformedVertices[j].z += transform.z;
                 }
 
                 //Preform back-face culling
@@ -230,14 +233,7 @@ namespace pixel
 
                 //Apply projection for all vertices of a triangle for rendering
                 for(int j = 0; j < 3; j++)
-                {
-                    //Project
                     projectedVertices[j] = PrespectiveProjection(transformedVertices[j]);
-
-                    //Transform x-axis and y-axis
-                    projectedVertices[j].x += transform.x;
-                    projectedVertices[j].y += transform.y;
-                }
 
                 //Create a new triangle and add it to the faces array
                 faces.push_back

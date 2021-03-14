@@ -64,35 +64,17 @@ public:
                     break;
                 }
             }
-            case SDL_MOUSEWHEEL:
-            {
-                if(event.wheel.y > 0)
-                {
-                    rotation += 1;
-                    break;
-                }
-                else if(event.wheel.y < 0)
-                {
-                    rotation += -1;
-                    break;
-                }
-                else if(event.wheel.y == 0)
-                {
-                    rotation += 0;
-                    break;
-                }
-            }
-
         }
     }
 
     void Update() override
     {
         //Update Stuff
-        mesh->scale.x = 300;
-        mesh->scale.y = 300;
+        mesh->scale.x = 200;
+        mesh->scale.y = 200;
         
-        mesh->transform.z = 3;
+        mesh->position.x = 0;
+        mesh->position.z = 3;
 
         mesh->UpdateMesh();
     }
