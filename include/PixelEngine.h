@@ -10,5 +10,6 @@
 #include <Pixel_Time.h>
 #include <Pixel_Vector.h>
 #include <Pixel_Window.h>
+#include <Pixel_Input.h>
 
 #endif

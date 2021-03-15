@@ -1,16 +1,15 @@
 #include <Pixel_PixelLoop.h>
 #include <iostream>
 
-void PixelLoop::Run()
+void pixel::PixelLoop::Run()
 {
     Setup();
 
     while(window->IsRunning())
     {
         //Input
-        SDL_Event event;
-        while(SDL_PollEvent(&event))
-            ProcessInput(event);
+        SDL_PollEvent(&pixel::Input::event);
+        
         if(!window->IsRunning())
             break;
 

@@ -110,7 +110,7 @@ namespace pixel
 
         //Creates a translation matrix
         static Matrix4 Translate(Vec3 direction)
-        {
+        {       
             // | 1   0   0   x |
             // | 0   1   0   y |
             // | 0   0   1   z |

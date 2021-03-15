@@ -229,8 +229,7 @@ namespace pixel
                     
                     //Translate transformation
                     Matrix4 transalteMatrix = Matrix4::Translate(this->position);
-                    transformedVertices[j] = transalteMatrix * transformedVertices[j];
-                    
+                    transformedVertices[j] = transalteMatrix * transformedVertices[j];  
                 }
 
                 //Preform back-face culling
@@ -250,8 +249,7 @@ namespace pixel
             for(int pass = 0; pass < faces.size() - 1; pass++)
                 for(int i = 0; i < faces.size() - pass - 1; i++)
                     if(faces[i].avgDepth < faces[i+1].avgDepth)
-                        Math::Swap<Triangle>(&faces[i], &faces[i+1]);
-                
+                        Math::Swap<Triangle>(&faces[i], &faces[i+1]);    
         }
         void RenderMesh(Window* window, Color color)
         {
