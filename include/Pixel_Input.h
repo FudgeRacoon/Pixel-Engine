@@ -11,7 +11,7 @@ namespace pixel
     {
         PIXELK_0 = '0',
         PIXELK_1 = '1',
-        PIXELk_2 = '2',
+        PIXELK_2 = '2',
         PIXELK_3 = '3',
         PIXELK_4 = '4',
         PIXELK_5 = '5',
@@ -66,7 +66,7 @@ namespace pixel
         PIXELK_COMMA = ',',
         PIXELK_MINUS = '-',
         PIXELK_PERIOD = '.',
-        PIXELK_SLASH = '/',
+        PIXELK_SLASH = '/'
     };
 
     class Input
@@ -80,6 +80,8 @@ namespace pixel
     public:
         //Returns true while the user holds down the key identified by name
         static bool GetKey(KeyCode key);
+        //Returns true during the frame the user starts pressing down the key identified by name
+        static bool GetKeyDown(KeyCode key);
         //Returns true during the frame the user releases the key identified by name
         static bool GetKeyUp(KeyCode key);
         //Returns the current mouse scroll

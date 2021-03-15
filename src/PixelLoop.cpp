@@ -9,7 +9,7 @@ void pixel::PixelLoop::Run()
     {
         //Input
         SDL_PollEvent(&pixel::Input::event);
-        
+            
         if(!window->IsRunning())
             break;
 

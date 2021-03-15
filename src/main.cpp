@@ -13,10 +13,18 @@ public:
                 window->GetFrameBuffer()->DrawPixel(window, x, y, pixel::Color(51, 51, 51, 255));
     }
 
-    void TestInput()
+    void HandleMeshInput()
     {
-        if(pixel::Input::GetKey(pixel::PIXELK_a))
-            std::cout << "Key is pressed" << std::endl;
+        if(pixel::Input::GetKeyDown(pixel::PIXELK_1))
+            mesh->renderMode = pixel::WIREFRAME;
+        else if(pixel::Input::GetKeyDown(pixel::PIXELK_2))
+            mesh->renderMode = pixel::SOLID;
+        else if(pixel::Input::GetKeyDown(pixel::PIXELK_3))
+            mesh->renderMode = pixel::WIREFRAME_AND_SOLID;
+        else if(pixel::Input::GetKeyDown(pixel::PIXELK_4))
+            mesh->renderOption = pixel::ENABLE_BACKFACECULLING;
+        else if(pixel::Input::GetKeyDown(pixel::PIXELK_5))
+            mesh->renderOption = pixel::DISABLE_BACKFACECULLING;
     }
 
 public:
@@ -30,7 +38,8 @@ public:
 
     void Update() override
     {
-        TestInput();
+        HandleMeshInput();
+
         mesh->scale.x = 200;
         mesh->scale.y = 200;
         

@@ -10,6 +10,14 @@ bool pixel::Input::GetKey(KeyCode key)
         return false;
 }
 
+bool pixel::Input::GetKeyDown(KeyCode key)
+{
+    if(event.type == SDL_KEYDOWN && event.key.keysym.sym == key && event.key.repeat == 0)
+        return true;
+    else
+        return false;
+}
+
 bool pixel::Input::GetKeyUp(KeyCode key)
 {
     if(event.type == SDL_KEYUP && event.key.keysym.sym == key)
