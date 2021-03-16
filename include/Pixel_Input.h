@@ -66,7 +66,12 @@ namespace pixel
         PIXELK_COMMA = ',',
         PIXELK_MINUS = '-',
         PIXELK_PERIOD = '.',
-        PIXELK_SLASH = '/'
+        PIXELK_SLASH = '/',
+
+        PIXELK_RIGHT = SDLK_RIGHT,
+        PIXELK_LEFT = SDLK_LEFT,
+        PIXELK_UP = SDLK_UP,
+        PIXELK_DOWN = SDLK_DOWN
     };
 
     class Input

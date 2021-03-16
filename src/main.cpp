@@ -34,19 +34,18 @@ public:
 
         mesh = new pixel::Mesh();
         mesh->LoadMesh("assets\\cube.obj");
+        mesh->scale.x = 200;
+        mesh->scale.y = 200;
     }
 
     void Update() override
     {
         HandleMeshInput();
 
-        mesh->scale.x = 200;
-        mesh->scale.y = 200;
-        
         mesh->rotation.y += 0.5;
         mesh->rotation.x += 0.5;
         mesh->rotation.z += 0.5;
-        
+
         mesh->position.z = 3;
 
         mesh->UpdateMesh();
