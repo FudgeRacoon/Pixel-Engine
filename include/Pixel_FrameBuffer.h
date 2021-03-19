@@ -96,7 +96,7 @@ namespace pixel
         {
             for(int y = 0; y < window->GetHeight(); y++)
                 for(int x = 0; x < window->GetWidth(); x++)
-                    data[(window->GetWidth() * y) + x] = pixel::Color::RgbToHex(color);     
+                    data[(window->GetWidth() * y) + x] = Color::RgbToHex(color);     
         }
     };
 };

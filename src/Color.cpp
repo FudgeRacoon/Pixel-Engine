@@ -67,3 +67,15 @@ pixel::uint32 pixel::Color::RgbToHex(Color color)
 
     return (a << 24) + (r << 16) + (g << 8) + b;
 }
+
+pixel::Color pixel::Color::HextoRGB(pixel::uint32 color)
+{
+    Color _color;
+
+    _color.r = color >> 24;
+    _color.g = color >> 16;
+    _color.b = color >> 8;
+    _color.a = color;
+
+    return _color;
+}

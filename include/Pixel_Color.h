@@ -8,7 +8,7 @@ namespace pixel
     class Color
     {
     public:
-        float r, g, b, a;
+        uint8 r, g, b, a;
 
     public:
         Color();
@@ -99,6 +99,15 @@ namespace pixel
          * @return returns an unsigned 32 bit integer
          */
         static uint32 RgbToHex(Color color);
+
+        /**
+         * @brief Converts a hex value to RGB 
+         * 
+         * @param color the color to be converted
+         * 
+         * @return returns a color object
+         */
+        static Color HextoRGB(uint32 color);
     };
 }
 

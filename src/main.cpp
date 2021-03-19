@@ -48,7 +48,7 @@ public:
 
         mesh->position.z = 3;
 
-        mesh->UpdateMesh();
+        mesh->UpdateMesh();  
     }
 
     void Render() override
@@ -61,7 +61,7 @@ public:
         pixel::Color red(255, 0, 0, 255);
         pixel::Color blue(0, 0, 255, 255);
         mesh->RenderMesh(window, pixel::Color::Lerp(red, blue, c += 0.005));
-        
+
         window->GetFrameBuffer()->RenderBuffer(window);
     }
 }_script;
@@ -70,6 +70,6 @@ public:
 int main(int argc, char* argv[])
 {
     _script.Run();
-
+    
     return 0;
 }
