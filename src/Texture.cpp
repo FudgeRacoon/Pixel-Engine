@@ -1,6 +1,5 @@
 #include <Pixel_Texture.h>
 #include <Pixel_FrameBuffer.h>
-#include <Pixel_Color.h>
 
 pixel::Texture::Texture() : textureBuffer(nullptr) {}
 
@@ -59,6 +58,7 @@ void pixel::Texture::Render(Window* window, int x, int y)
         {
             uint32 pixel = textureBuffer[(width * _y) + _x];
             Color color = Color::HextoRGB(pixel);
+            color = color + this->color;
             window->GetFrameBuffer()->DrawPixel(window, x + _x, y - _y, color);
         }        
 }

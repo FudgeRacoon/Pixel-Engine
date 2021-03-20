@@ -63,7 +63,7 @@ namespace pixel
             result.a = pixel::Math::Clamp(this->a * value, 0, 255);
             return result;
         }
-        bool operator =(Color color)
+        bool operator ==(Color color)
         {
             return this->r == color.r && 
                    this->g == color.g &&

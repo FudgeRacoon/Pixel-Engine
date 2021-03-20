@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <Pixel_Window.h>
+#include <Pixel_Color.h>
 
 namespace pixel
 {
@@ -15,6 +16,9 @@ namespace pixel
     private:
         int width;
         int height;
+
+    public:
+        Color color;
 
     public:
         Texture();

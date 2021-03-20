@@ -5,7 +5,6 @@ class script : public pixel::PixelLoop
 {
 public:
     pixel::Mesh* mesh;
-    pixel::Texture* tex;
 
     void GenerateGrid(int size)
     {
@@ -37,9 +36,6 @@ public:
         mesh->LoadMesh("assets\\cube.obj");
         mesh->scale.x = 200;
         mesh->scale.y = 200;
-
-        tex = new pixel::Texture();
-        tex->LoadTexture("C:\\Users\\Fudgeracoon\\Pictures\\Saved Pictures\\FudgeRacoon.jpg");
     }
 
     void Update() override
@@ -52,7 +48,7 @@ public:
 
         mesh->position.z = 3;
 
-        mesh->UpdateMesh();  
+        mesh->UpdateMesh();
     }
 
     void Render() override
@@ -65,8 +61,6 @@ public:
         pixel::Color red(255, 0, 0, 255);
         pixel::Color blue(0, 0, 255, 255);
         mesh->RenderMesh(window, pixel::Color::Lerp(red, blue, c += 0.005));
-
-        tex->Render(window, 100, -100);
 
         window->GetFrameBuffer()->RenderBuffer(window);
     }
