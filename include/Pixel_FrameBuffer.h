@@ -16,7 +16,7 @@ namespace pixel
     struct FrameBuffer 
     {
     private:
-        uint32* data;
+        Uint32* data;
         SDL_Texture* frameBuffer_texture;
 
     public:
@@ -33,7 +33,7 @@ namespace pixel
             );
 
             //Initialize an array holding pixel data
-            data = new uint32_t[window->GetWidth() * window->GetHeight()];
+            data = new Uint32[window->GetWidth() * window->GetHeight()];
         }
         ~FrameBuffer()
         {

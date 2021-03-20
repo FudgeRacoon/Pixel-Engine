@@ -3,7 +3,7 @@
 #include <sstream>
 #include <iostream>
 
-pixel::Color::Color() : r(0), g(0), b(0), a(0) {}
+pixel::Color::Color() : r(0), g(0), b(0), a(255) {}
 pixel::Color::Color(float r, float g, float b, float a) : r(r), g(g), b(b), a(a) {}
 pixel::Color::Color(float r, float g, float b) :  r(r), g(g), b(b)
 {
@@ -72,10 +72,10 @@ pixel::Color pixel::Color::HextoRGB(pixel::uint32 color)
 {
     Color _color;
 
-    _color.r = color >> 24;
-    _color.g = color >> 16;
-    _color.b = color >> 8;
-    _color.a = color;
+    _color.a = color >> 24;
+    _color.r = color >> 16;
+    _color.g = color >> 8;
+    _color.b = color;
 
     return _color;
 }
