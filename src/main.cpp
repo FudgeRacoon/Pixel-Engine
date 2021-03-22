@@ -20,10 +20,8 @@ public:
         else if(pixel::Input::GetKeyDown(pixel::PIXELK_2))
             mesh->renderMode = pixel::SOLID;
         else if(pixel::Input::GetKeyDown(pixel::PIXELK_3))
-            mesh->renderMode = pixel::WIREFRAME_AND_SOLID;
-        else if(pixel::Input::GetKeyDown(pixel::PIXELK_4))
             mesh->renderOption = pixel::ENABLE_BACKFACECULLING;
-        else if(pixel::Input::GetKeyDown(pixel::PIXELK_5))
+        else if(pixel::Input::GetKeyDown(pixel::PIXELK_4))
             mesh->renderOption = pixel::DISABLE_BACKFACECULLING;
     }
 
@@ -33,9 +31,9 @@ public:
         window = new pixel::Window("Pixel Engine", 800, 600, SDL_WINDOW_SHOWN, 0, false);
 
         mesh = new pixel::Mesh();
-        mesh->LoadMesh("assets\\cube.obj");
-        mesh->scale.x = 200;
-        mesh->scale.y = 200;
+        mesh->LoadMesh("assets\\sphere.obj");
+
+        mesh->color = pixel::Color::White();
     }
 
     void Update() override
@@ -56,11 +54,7 @@ public:
         window->GetFrameBuffer()->ClearBuffer(window, pixel::Color::Black());
 
         GenerateGrid(10);
-
-        static float c = 0.0;
-        pixel::Color red(255, 0, 0, 255);
-        pixel::Color blue(0, 0, 255, 255);
-        mesh->RenderMesh(window, pixel::Color::Lerp(red, blue, c += 0.005));
+        mesh->RenderMesh(window);
 
         window->GetFrameBuffer()->RenderBuffer(window);
     }

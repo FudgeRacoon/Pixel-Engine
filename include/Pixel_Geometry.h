@@ -21,10 +21,11 @@ namespace pixel
         float y;
         int width;
         int height;
+        Color color;
 
-        Rect(float x, float y, int width, int height) : x(x), y(y), width(width), height(height) {}
+        Rect(float x, float y, int width, int height, Color color) : x(x), y(y), width(width), height(height), color(color) {}
 
-        void DrawNoFill(Window* window, Color color)
+        void DrawNoFill(Window* window)
         {
             FrameBuffer* frameBuffer = window->GetFrameBuffer();
 
@@ -37,7 +38,7 @@ namespace pixel
             //Left edge
             frameBuffer->DrawLine(window, x + width, y, x + width, y - height, color);
         }
-        void DrawFill(Window* window, Color color)
+        void DrawFill(Window* window)
         {
             FrameBuffer* frameBuffer = window->GetFrameBuffer();
 
@@ -50,15 +51,15 @@ namespace pixel
     struct Triangle
     {
         Vec2 vertices[3];
-        float avgDepth;
+        Color color;
 
         Triangle () {}
-        Triangle(Vec2 vertices[], float avgDepth)
+        Triangle(Vec2 vertices[], Color color)
         {
             for(int i = 0; i < 3; i++)
                 this->vertices[i] = vertices[i];
 
-            this->avgDepth = avgDepth;
+            this->color = color;
         }
 
     private:
@@ -94,7 +95,7 @@ namespace pixel
         }
 
     public:
-        void DrawNoFill(Window* window, Color color)
+        void DrawNoFill(Window* window)
         {
             FrameBuffer* frameBuffer = window->GetFrameBuffer();
 
@@ -102,7 +103,7 @@ namespace pixel
             frameBuffer->DrawLine(window, vertices[1].x, vertices[1].y, vertices[2].x, vertices[2].y, color);
             frameBuffer->DrawLine(window, vertices[2].x, vertices[2].y, vertices[0].x, vertices[0].y, color);
         }
-        void DrawFill(Window* window, Color color)
+        void DrawFill(Window* window)
         {   
             /*
             //Sort the vertices according to largest y descendingly
@@ -171,7 +172,6 @@ namespace pixel
 
                     if ( (s >= 0) && (t >= 0) && (s + t <= 1))
                         window->GetFrameBuffer()->DrawPixel(window, x, y, color);
-                    
                 }
             }
         }

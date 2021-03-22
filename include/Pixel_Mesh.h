@@ -16,7 +16,6 @@ namespace pixel
     {
         WIREFRAME = 0,
         SOLID = 1,
-        WIREFRAME_AND_SOLID = 2
     };
 
     enum RenderOption
@@ -37,26 +36,10 @@ namespace pixel
     class Mesh
     {
     private:
-        Vec2 PrespectiveProjection(Vec3 point)
+        Vec2 INTERNAL_PrespectiveProjection(Vec3 point)
         {
             //Preform prespective divison
             return Vec2(point.x / point.z, point.y / point.z);
-        }
-        float BackFaceCull(Vec3 faceVertices[])
-        {
-            Vec3 a = faceVertices[0];
-            Vec3 b = faceVertices[1];
-            Vec3 c = faceVertices[2];
-
-            Vec3 ab = a - b;
-            Vec3 ac = a - c;
-
-            Vec3 normal = Vec3::Cross(ab, ac);
-            normal = Vec3::Normalize(normal);
-
-            Vec3 cameraRay = Vec3(0, 0, 0) - a;
-
-            return Vec3::Dot(cameraRay, normal);
         }
 
     private:
@@ -68,20 +51,27 @@ namespace pixel
         Vec3 position;
         Vec3 rotation;
         Vec3 scale;
-
-    public:
+        Color color;
         RenderMode renderMode;
         RenderOption renderOption;
 
     public:
         Mesh()
         {
-            renderMode = WIREFRAME_AND_SOLID;
+            renderMode = SOLID;
             renderOption = ENABLE_BACKFACECULLING;
 
-            position.x = 0; position.y = 0; position.z = 0;
-            rotation.x = 0; rotation.y = 0; rotation.z = 0;
-            scale.x = 1; scale.y = 1; scale.z = 1;
+            position.x = 0; 
+            position.y = 0; 
+            position.z = 0;
+
+            rotation.x = 0; 
+            rotation.y = 0; 
+            rotation.z = 0;
+
+            scale.x = 1; 
+            scale.y = 1; 
+            scale.z = 1;
         }
     
     public:
@@ -199,18 +189,20 @@ namespace pixel
 
             for(int i = 0; i < edges.size(); i++)
             {
-                Vec3 untransformedVertices[3];      //Array to hold vertices that haven't been tranformed yet
-                Vec3 transformedVertices[3];        //Array to hold vertices that has been transformed
-                Vec2 projectedVertices[3];          //Array to hold vertices that has been projected and ready to render
+                #pragma region Get vertices
+                Vec3 normal;                        
+                Vec3 untransformedVertices[3];      
+                Vec3 transformedVertices[3];        
+                Vec2 projectedVertices[3];          
 
                 Face _edge = edges[i];
 
-                //Get correct vertices using face data and store them
                 untransformedVertices[0] = vertices[_edge.a - 1];
                 untransformedVertices[1] = vertices[_edge.b - 1];
                 untransformedVertices[2] = vertices[_edge.c - 1];
+                #pragma endregion
 
-                //Loop through all vertices of a triangle and apply transformations
+                #pragma region Transformations
                 for(int j = 0; j < 3; j++)
                 {
                     transformedVertices[j] = untransformedVertices[j];
@@ -231,27 +223,52 @@ namespace pixel
 
                     transformedVertices[j] = worldMatrix * transformedVertices[j];
                 }
+                #pragma endregion
 
-                //Preform back-face culling
+                #pragma region Face normal
+                Vec3 a = transformedVertices[0];
+                Vec3 b = transformedVertices[1];
+                Vec3 c = transformedVertices[2];
+
+                Vec3 ab = b - a;
+                Vec3 ac = c - a;
+                ab = Vec3::Normalize(ab);
+                ac = Vec3::Normalize(ac);
+
+                normal = Vec3::Cross(ab, ac);
+                normal = Vec3::Normalize(normal);
+                #pragma endregion
+
+                #pragma region Back-Face Culling
                 if(renderOption == ENABLE_BACKFACECULLING)
-                    if(BackFaceCull(transformedVertices) < 0)
+                {
+                    Vec3 cameraRay = -(a - Vec3(0, 0, 0));
+
+                    float dot = Vec3::Dot(cameraRay, normal);
+                    if(dot < 0)
                         continue;
+                }
+                #pragma endregion
 
-                //Apply projection for all vertices of a triangle for rendering
+                #pragma region Flat-Shading
+                float colorIntensity = -Vec3::Dot(Vec3(0, 0, 1), normal);
+                #pragma endregion
+
+                #pragma region Projection
                 for(int j = 0; j < 3; j++)
-                    projectedVertices[j] = PrespectiveProjection(transformedVertices[j]);
+                {
+                    projectedVertices[j] = INTERNAL_PrespectiveProjection(transformedVertices[j]);
+                    projectedVertices[j].x *= 100;
+                    projectedVertices[j].y *= 100;
+                }
+                #pragma endregion
 
-                //Create a new triangle and add it to the faces array
-                faces.push_back(Triangle(projectedVertices, (transformedVertices[0].z + transformedVertices[1].z + transformedVertices[2].z) / 3.0));
+                #pragma region Create triangle
+                faces.push_back(Triangle(projectedVertices, color * colorIntensity));
+                #pragma endregion
             }
-
-            //Sort the faces according to their depth ascendingly
-            for(int pass = 0; pass < faces.size() - 1; pass++)
-                for(int i = 0; i < faces.size() - pass - 1; i++)
-                    if(faces[i].avgDepth < faces[i+1].avgDepth)
-                        Math::Swap<Triangle>(&faces[i], &faces[i+1]);    
         }
-        void RenderMesh(Window* window, Color color)
+        void RenderMesh(Window* window)
         {
             for(int i = 0; i < faces.size(); i++)
             {
@@ -259,18 +276,12 @@ namespace pixel
                 {
                     case WIREFRAME:
                     {
-                        faces[i].DrawNoFill(window, color);
+                        faces[i].DrawNoFill(window);
                         break;
                     }
                     case SOLID:
                     {
-                        faces[i].DrawFill(window, color);
-                        break;
-                    }
-                    case WIREFRAME_AND_SOLID:
-                    {
-                        faces[i].DrawFill(window, color);
-                        faces[i].DrawNoFill(window, pixel::Color::White());
+                        faces[i].DrawFill(window);
                         break;
                     }
                 }   

@@ -60,7 +60,7 @@ namespace pixel
             result.r = pixel::Math::Clamp(this->r * value, 0, 255);
             result.g = pixel::Math::Clamp(this->g * value, 0, 255);
             result.b = pixel::Math::Clamp(this->b * value, 0, 255);
-            result.a = pixel::Math::Clamp(this->a * value, 0, 255);
+            result.a = 255;
             return result;
         }
         bool operator ==(Color color)
